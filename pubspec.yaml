@@ -1,0 +1,20 @@
+name: waveform_pro
+description: "Production-quality Flutter waveform widget with GPU-accelerated rendering, zoom, region selection, cue markers, and audio peak extraction."
+version: 1.0.0
+homepage: https://github.com/govindtank/waveform_pro
+repository: https://github.com/govindtank/waveform_pro
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
