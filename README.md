@@ -1,5 +1,7 @@
 # waveform_pro
 
+<img src="./screenshot.svg" width="750" alt="waveform_pro demo screenshot"/>
+
 A production-quality Flutter waveform widget with GPU-accelerated rendering, zoom, region selection, cue markers, and audio peak extraction.
 
 ## Features
