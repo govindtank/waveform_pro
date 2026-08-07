@@ -3,3 +3,7 @@
 example/.dart_tool/
 example/build/
 build/
+
+# IDE files
+.idea/
+*.iml
