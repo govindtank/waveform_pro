@@ -73,10 +73,10 @@ class _HomePageState extends State<HomePage> {
               FilledButton.tonalIcon(
                 icon: const Icon(Icons.bookmark_add),
                 label: const Text('Marker 50%'),
-                onPressed: () => setState(() =>
-                  _ctrl.addMarker(const CueMarker(
-                    positionFraction: 0.5, label: 'Mid',
-                  ))),
+                onPressed: () => setState(() => _ctrl.addMarker(const CueMarker(
+                      positionFraction: 0.5,
+                      label: 'Mid',
+                    ))),
               ),
               const SizedBox(width: 8),
               TextButton(

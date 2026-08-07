@@ -30,7 +30,8 @@ class WaveformPainter extends CustomPainter {
     final centerY = size.height / 2;
 
     // Calculate visible sample range
-    final startSample = (scrollOffset / pixelsPerSample).floor().clamp(0, data.sampleCount - 1);
+    final startSample =
+        (scrollOffset / pixelsPerSample).floor().clamp(0, data.sampleCount - 1);
     final visibleSamples = (viewportWidth / pixelsPerSample).ceil() + 2;
     final endSample = (startSample + visibleSamples).clamp(0, data.sampleCount);
 
@@ -56,8 +57,10 @@ class WaveformPainter extends CustomPainter {
     if (regionHighlights != null) {
       final regionPaint = Paint()..color = style.regionColor;
       for (final (startSec, endSec) in regionHighlights!) {
-        final startX = (startSec * data.samplesPerSecond * pixelsPerSample) - scrollOffset;
-        final endX = (endSec * data.samplesPerSecond * pixelsPerSample) - scrollOffset;
+        final startX =
+            (startSec * data.samplesPerSecond * pixelsPerSample) - scrollOffset;
+        final endX =
+            (endSec * data.samplesPerSecond * pixelsPerSample) - scrollOffset;
         if (endX < 0 || startX > size.width) continue;
         canvas.drawRect(
           Rect.fromLTRB(

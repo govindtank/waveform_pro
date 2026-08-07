@@ -21,9 +21,12 @@ class PeakExtractor {
       throw const FormatException('File too small to be a valid WAV');
     }
 
-    final sampleRate = ByteData.sublistView(wavBytes, 24, 28).getUint16(0, Endian.little);
-    final bitsPerSample = ByteData.sublistView(wavBytes, 34, 36).getUint16(0, Endian.little);
-    final dataSize = ByteData.sublistView(wavBytes, 40, 44).getUint32(0, Endian.little);
+    final sampleRate =
+        ByteData.sublistView(wavBytes, 24, 28).getUint16(0, Endian.little);
+    final bitsPerSample =
+        ByteData.sublistView(wavBytes, 34, 36).getUint16(0, Endian.little);
+    final dataSize =
+        ByteData.sublistView(wavBytes, 40, 44).getUint32(0, Endian.little);
 
     final totalSamples = dataSize ~/ (bitsPerSample ~/ 8);
     final durationSeconds = totalSamples / sampleRate;
@@ -40,10 +43,13 @@ class PeakExtractor {
 
     for (int bin = 0; bin < targetSamples; bin++) {
       double maxPeak = 0;
-      for (int j = 0; j < samplesPerBin && sampleOffset + 1 < wavBytes.length; j++) {
+      for (int j = 0;
+          j < samplesPerBin && sampleOffset + 1 < wavBytes.length;
+          j++) {
         if (bitsPerSample == 16) {
-          final sample = ByteData.sublistView(wavBytes, sampleOffset, sampleOffset + 2)
-              .getInt16(0, Endian.little);
+          final sample =
+              ByteData.sublistView(wavBytes, sampleOffset, sampleOffset + 2)
+                  .getInt16(0, Endian.little);
           maxPeak = max(maxPeak, sample.abs() / 32768.0);
           sampleOffset += 2;
         } else if (bitsPerSample == 8) {

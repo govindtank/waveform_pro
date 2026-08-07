@@ -77,7 +77,8 @@ class WaveformTimeline extends StatefulWidget {
 
 class _WaveformTimelineState extends State<WaveformTimeline> {
   late WaveformController _controller;
-  final TransformationController _transformController = TransformationController();
+  final TransformationController _transformController =
+      TransformationController();
 
   int _lastSampleCount = 0;
 
@@ -293,8 +294,7 @@ class _WaveformTimelineState extends State<WaveformTimeline> {
       );
 
       // Keep focal point stationary during zoom
-      final focalSample =
-          (_initialScroll + focalPoint.dx) / _initialPps;
+      final focalSample = (_initialScroll + focalPoint.dx) / _initialPps;
       final newScroll = (focalSample * newPps) - focalPoint.dx;
 
       setState(() {
@@ -314,8 +314,7 @@ class _WaveformTimelineState extends State<WaveformTimeline> {
     final dx = focalPoint.dx - _lastFocalPoint!.dx;
     if (dx.abs() > 1) {
       setState(() {
-        _controller.scrollOffset =
-            (_controller.scrollOffset - dx).clamp(
+        _controller.scrollOffset = (_controller.scrollOffset - dx).clamp(
           0.0,
           max(
             0,
@@ -401,8 +400,7 @@ class _TimeRulerPainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.grey.shade400
       ..strokeWidth = 1;
-    final textStyle =
-        TextStyle(color: Colors.grey.shade500, fontSize: 9);
+    final textStyle = TextStyle(color: Colors.grey.shade500, fontSize: 9);
 
     // Determine tick interval based on zoom level
     final visibleDuration =
@@ -420,18 +418,14 @@ class _TimeRulerPainter extends CustomPainter {
       tickInterval = 10;
     }
 
-    final startTime =
-        scrollOffset / (pixelsPerSample * samplesPerSecond);
+    final startTime = scrollOffset / (pixelsPerSample * samplesPerSecond);
     final endTime =
-        (scrollOffset + viewportWidth) /
-        (pixelsPerSample * samplesPerSecond);
+        (scrollOffset + viewportWidth) / (pixelsPerSample * samplesPerSecond);
 
-    final firstTick =
-        (startTime / tickInterval).ceil() * tickInterval;
+    final firstTick = (startTime / tickInterval).ceil() * tickInterval;
 
     for (double t = firstTick; t <= endTime; t += tickInterval) {
-      final x =
-          (t * samplesPerSecond * pixelsPerSample) - scrollOffset;
+      final x = (t * samplesPerSecond * pixelsPerSample) - scrollOffset;
       if (x < 0 || x > viewportWidth) continue;
 
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);

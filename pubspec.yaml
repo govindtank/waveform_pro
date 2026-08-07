@@ -3,6 +3,12 @@ description: "Production-quality Flutter waveform widget with GPU-accelerated re
 version: 1.0.0
 homepage: https://github.com/govindtank/waveform_pro
 repository: https://github.com/govindtank/waveform_pro
+topics:
+  - audio
+  - waveform
+  - visualization
+  - player
+  - flutter
 
 environment:
   sdk: ^3.5.0

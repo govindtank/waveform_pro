@@ -47,7 +47,8 @@ class WaveformController {
 
   /// The visible sample range [start, end] based on scroll and viewport.
   (int, int) get visibleSampleRange {
-    final startSample = (scrollOffset / pixelsPerSample).floor().clamp(0, _totalSamples);
+    final startSample =
+        (scrollOffset / pixelsPerSample).floor().clamp(0, _totalSamples);
     final visibleSamples = (viewportWidth / pixelsPerSample).ceil();
     final endSample = (startSample + visibleSamples).clamp(0, _totalSamples);
     return (startSample, endSample);
@@ -71,7 +72,8 @@ class WaveformController {
 
   /// Zoom in by a factor.
   void zoomIn([double factor = 1.5]) {
-    final newPps = (pixelsPerSample * factor).clamp(minPixelsPerSample, maxPixelsPerSample);
+    final newPps = (pixelsPerSample * factor)
+        .clamp(minPixelsPerSample, maxPixelsPerSample);
     if (newPps != pixelsPerSample) {
       pixelsPerSample = newPps;
       _totalWidth = _totalSamples * pixelsPerSample;
@@ -124,7 +126,8 @@ class WaveformController {
   /// Scroll so that the given sample index is visible.
   void scrollToSample(int sampleIndex) {
     final targetOffset = sampleIndex * pixelsPerSample - viewportWidth / 2;
-    scrollOffset = targetOffset.clamp(0.0, (_totalWidth - viewportWidth).clamp(0, double.infinity));
+    scrollOffset = targetOffset.clamp(
+        0.0, (_totalWidth - viewportWidth).clamp(0, double.infinity));
     onScrollChanged?.call(scrollOffset);
   }
 
