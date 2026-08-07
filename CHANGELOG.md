@@ -1,3 +1,11 @@
+## 1.0.2
+
+* Exclude IDE files (`.idea/`, `*.iml`) from the published archive.
+
+## 1.0.1
+
+* Initial public release cleanup: archive now excludes build and IDE artifacts.
+
 ## 1.0.0
 
 * Initial release as a production-quality Flutter waveform widget.
