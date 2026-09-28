@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "waveform_pro",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "dependencies": [
         "flutter"
       ],
