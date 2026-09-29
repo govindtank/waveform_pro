@@ -45,7 +45,7 @@ class WaveformController {
         regions = regions ?? [],
         markers = markers ?? [];
 
-  /// The visible sample range [start, end] based on scroll and viewport.
+  /// The visible sample range (start, end) based on scroll and viewport.
   (int, int) get visibleSampleRange {
     final startSample =
         (scrollOffset / pixelsPerSample).floor().clamp(0, _totalSamples);
