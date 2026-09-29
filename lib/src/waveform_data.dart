@@ -29,16 +29,33 @@ class WaveformData {
   int get sampleCount => samples.length;
 
   /// Duration per sample in seconds.
-  double get secondsPerSample => durationSeconds / samples.length;
+  double get secondsPerSample =>
+      samples.isEmpty ? 0 : durationSeconds / samples.length;
 
   /// Samples per second.
-  double get samplesPerSecond => samples.length / durationSeconds;
+  double get samplesPerSecond =>
+      durationSeconds == 0 ? 0 : samples.length / durationSeconds;
+
+  /// Creates a new [WaveformData] instance with added samples appended,
+  /// updating the total duration accordingly.
+  WaveformData append(List<double> newSamples, {double? addedDurationSeconds}) {
+    final updatedSamples = List<double>.from(samples)..addAll(newSamples);
+    final extraDuration = addedDurationSeconds ??
+        (samples.isEmpty
+            ? 0.0
+            : (newSamples.length * (durationSeconds / samples.length)));
+    return WaveformData(
+      samples: updatedSamples,
+      durationSeconds: durationSeconds + extraDuration,
+    );
+  }
 
   /// Get the appropriate resolution level for a given viewport width.
   ///
   /// [visibleSamples] is the number of samples that fit in the current viewport.
   /// Returns a reduced-resolution list for efficient rendering.
   List<double> getLevel(int visibleSamples) {
+    if (samples.isEmpty) return const [];
     if (visibleSamples >= samples.length) return samples;
 
     // Find the pyramid level that best matches the target resolution
@@ -76,8 +93,10 @@ class WaveformData {
 
   /// Generate a data URL string for debugging/preview purposes.
   String toDataUri() {
+    if (samples.isEmpty) return '';
     final buffer = StringBuffer();
-    for (int i = 0; i < samples.length; i += samples.length ~/ 100) {
+    final step = math.max(1, samples.length ~/ 100);
+    for (int i = 0; i < samples.length; i += step) {
       buffer.write('${(samples[i] * 100).toStringAsFixed(0)},');
     }
     return buffer.toString();
@@ -86,6 +105,7 @@ class WaveformData {
   // ---- Private helpers ----
 
   static List<List<double>> _buildPyramid(List<double> samples) {
+    if (samples.isEmpty) return [const []];
     final pyramid = <List<double>>[samples];
     var current = samples;
     while (current.length > 64) {
@@ -118,7 +138,7 @@ class _SeededRandom {
   _SeededRandom(this._seed);
 
   double nextDouble() {
-    _seed = ((_seed * 1103515245) + 12345) & 0x7FFFFFFF;
-    return _seed / 0x7FFFFFFF;
+    _seed = (_seed * 1103515245 + 12345) & 0x7fffffff;
+    return _seed / 0x7fffffff;
   }
 }

@@ -1,9 +1,11 @@
-# Build artifacts
 .dart_tool/
-example/.dart_tool/
-example/build/
-build/
-
-# IDE files
 .idea/
 *.iml
+build/
+example/.dart_tool/
+example/build/
+example/ios/
+example/android/
+example/windows/
+example/linux/
+example/macos/

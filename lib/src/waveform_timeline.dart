@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'waveform_data.dart';
 import 'waveform_controller.dart';
 import 'waveform_painter.dart';
-import 'marker.dart';
 
 /// A production-quality waveform timeline widget.
 ///
 /// Features:
 /// - GPU-accelerated waveform rendering via [CustomPainter]
+/// - Support for continuous, discrete bar (SoundCloud), and curved spline modes
+/// - Dual-color played vs unplayed waveform progress fill
 /// - Pinch-to-zoom and horizontal scroll
 /// - Region selection with draggable handles
 /// - Cue markers with labels
@@ -121,337 +122,266 @@ class _WaveformTimelineState extends State<WaveformTimeline> {
     if (!mounted) return;
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox != null && renderBox.hasSize) {
-      setState(() {
-        _controller.viewportWidth = renderBox.size.width;
-        if (_lastSampleCount > 0) {
-          _controller.resetZoom();
-        }
-      });
+      final width = renderBox.size.width;
+      _controller.viewportWidth = width;
+      if (_lastSampleCount > 0 && _controller.pixelsPerSample == 1.0) {
+        _controller.resetZoom();
+      }
+      setState(() {});
     }
-  }
-
-  CueRenderPoint? _markerToCuePoint(CueMarker marker) {
-    return CueRenderPoint(
-      sampleIndex: (marker.positionFraction * widget.data.sampleCount).round(),
-      label: marker.label,
-      color: marker.color,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final style = widget.style;
+    final totalHeight = widget.height + (widget.showTimeRuler ? 24.0 : 0.0);
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Update viewport width whenever layout changes
-        _controller.viewportWidth = constraints.maxWidth;
+        final viewportWidth = constraints.maxWidth;
+        _controller.viewportWidth = viewportWidth;
 
-        // Build current painter
-        final cuePoints = _controller.markers
-            .map(_markerToCuePoint)
-            .where((e) => e != null)
-            .cast<CueRenderPoint>()
-            .toList();
-
-        // Region highlights
-        final regionHighlights = <(double, double)>[];
-        for (final r in _controller.regions) {
-          regionHighlights.add((
-            r.startSeconds(widget.data.durationSeconds),
-            r.endSeconds(widget.data.durationSeconds),
-          ));
-        }
-
-        final painter = WaveformPainter(
-          data: widget.data,
-          style: widget.style,
-          pixelsPerSample: _controller.pixelsPerSample,
-          scrollOffset: _controller.scrollOffset,
-          viewportWidth: constraints.maxWidth,
-          regionHighlights: regionHighlights,
-          cuePoints: cuePoints,
-        );
-
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Waveform + gesture handling
-            GestureDetector(
-              onScaleStart: widget.enableZoom ? _onScaleStart : null,
-              onScaleUpdate: widget.enableZoom ? _onScaleUpdate : null,
-              onScaleEnd: widget.enableZoom ? _onScaleEnd : null,
-              onHorizontalDragUpdate: _onHorizontalDragUpdate,
-              onTapUp: (details) {
-                final time = _controller.pixelToTime(details.localPosition.dx);
-                widget.onTap?.call(time);
-              },
-              onLongPressStart: (details) {
-                if (!widget.enableMarkers) return;
-                final time = _controller.pixelToTime(details.localPosition.dx);
-                final fraction = time / widget.data.durationSeconds;
-                setState(() {
-                  _controller.markers.add(CueMarker(
-                    positionFraction: fraction.clamp(0.0, 1.0),
-                    label: '${time.toStringAsFixed(1)}s',
-                    color: Colors.orange,
-                  ));
-                });
-              },
-              child: Container(
-                height: widget.height,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: CustomPaint(
-                    painter: painter,
-                    size: Size(constraints.maxWidth, widget.height),
+        return SizedBox(
+          height: totalHeight,
+          child: Column(
+            children: [
+              // Waveform area
+              Expanded(
+                child: GestureDetector(
+                  onTapDown: _handleTapDown,
+                  onHorizontalDragStart: _handleDragStart,
+                  onHorizontalDragUpdate: _handleDragUpdate,
+                  onHorizontalDragEnd: _handleDragEnd,
+                  child: ClipRect(
+                    child: CustomPaint(
+                      size: Size(viewportWidth, widget.height),
+                      painter: WaveformPainter(
+                        data: widget.data,
+                        style: style,
+                        pixelsPerSample: _controller.pixelsPerSample,
+                        scrollOffset: _controller.scrollOffset,
+                        viewportWidth: viewportWidth,
+                        playheadPosition: widget.playheadPosition,
+                        regionHighlights: _controller.regions.map((r) {
+                          return (
+                            r.startSeconds(widget.data.durationSeconds),
+                            r.endSeconds(widget.data.durationSeconds),
+                          );
+                        }).toList(),
+                        cuePoints: _controller.markers.map((m) {
+                          final sampleIdx =
+                              (m.positionFraction * widget.data.sampleCount)
+                                  .round();
+                          return CueRenderPoint(
+                            sampleIndex: sampleIdx,
+                            label: m.label,
+                            color: m.color,
+                          );
+                        }).toList(),
+                      ),
+                      foregroundPainter: _PlayheadPainter(
+                        playheadPosition: widget.playheadPosition,
+                        samplesPerSecond: widget.data.samplesPerSecond,
+                        pixelsPerSample: _controller.pixelsPerSample,
+                        scrollOffset: _controller.scrollOffset,
+                        color: widget.playheadColor,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Time ruler
-            if (widget.showTimeRuler)
-              _TimeRuler(
-                durationSeconds: widget.data.durationSeconds,
-                viewportWidth: constraints.maxWidth,
-                pixelsPerSample: _controller.pixelsPerSample,
-                scrollOffset: _controller.scrollOffset,
-                samplesPerSecond: widget.data.samplesPerSecond,
-              ),
-
-            // Controls bar
-            if (widget.enableZoom) _buildControls(),
-          ],
+              // Time ruler
+              if (widget.showTimeRuler)
+                SizedBox(
+                  height: 24,
+                  child: CustomPaint(
+                    size: Size(viewportWidth, 24),
+                    painter: _TimeRulerPainter(
+                      durationSeconds: widget.data.durationSeconds,
+                      samplesPerSecond: widget.data.samplesPerSecond,
+                      pixelsPerSample: _controller.pixelsPerSample,
+                      scrollOffset: _controller.scrollOffset,
+                      viewportWidth: viewportWidth,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget _buildControls() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.zoom_out, size: 20),
-            onPressed: () => setState(() => _controller.zoomOut()),
-            tooltip: 'Zoom out',
-          ),
-          Text(
-            '${_controller.pixelsPerSample.toStringAsFixed(1)} px/sample',
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          IconButton(
-            icon: const Icon(Icons.zoom_in, size: 20),
-            onPressed: () => setState(() => _controller.zoomIn()),
-            tooltip: 'Zoom in',
-          ),
-          const SizedBox(width: 8),
-          TextButton(
-            onPressed: () => setState(() => _controller.resetZoom()),
-            child: const Text('Fit', style: TextStyle(fontSize: 12)),
-          ),
-          if (_controller.regions.isNotEmpty) ...[
-            const SizedBox(width: 8),
-            TextButton(
-              onPressed: () => setState(() => _controller.clearRegions()),
-              child: const Text('Clear regions',
-                  style: TextStyle(fontSize: 12, color: Colors.red)),
-            ),
-          ],
-        ],
-      ),
+  void _handleTapDown(TapDownDetails details) {
+    final x = details.localPosition.dx;
+    final sampleIndex =
+        ((x + _controller.scrollOffset) / _controller.pixelsPerSample).round();
+    final timeSeconds = sampleIndex / widget.data.samplesPerSecond;
+    widget.onTap?.call(timeSeconds);
+  }
+
+  double? _dragStartX;
+  double? _dragStartScrollOffset;
+
+  void _handleDragStart(DragStartDetails details) {
+    _dragStartX = details.localPosition.dx;
+    _dragStartScrollOffset = _controller.scrollOffset;
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    if (_dragStartX == null || _dragStartScrollOffset == null) return;
+    final deltaX = _dragStartX! - details.localPosition.dx;
+    final maxScroll = max(
+      0.0,
+      (widget.data.sampleCount * _controller.pixelsPerSample) -
+          _controller.viewportWidth,
     );
+    _controller.scrollOffset =
+        (_dragStartScrollOffset! + deltaX).clamp(0.0, maxScroll);
+    setState(() {});
   }
 
-  // ---- Gesture handlers ----
-
-  Offset? _lastFocalPoint;
-  double _initialPps = 1.0;
-  double _initialScroll = 0;
-
-  void _onScaleStart(ScaleStartDetails details) {
-    _lastFocalPoint = details.focalPoint;
-    _initialPps = _controller.pixelsPerSample;
-    _initialScroll = _controller.scrollOffset;
-  }
-
-  void _onScaleUpdate(ScaleUpdateDetails details) {
-    if (_lastFocalPoint == null) return;
-
-    final focalPoint = details.focalPoint;
-    final scale = details.scale;
-
-    if (scale != 1.0) {
-      // Pinch zoom
-      final newPps = (_initialPps * scale).clamp(
-        _controller.minPixelsPerSample,
-        _controller.maxPixelsPerSample,
-      );
-
-      // Keep focal point stationary during zoom
-      final focalSample = (_initialScroll + focalPoint.dx) / _initialPps;
-      final newScroll = (focalSample * newPps) - focalPoint.dx;
-
-      setState(() {
-        _controller.pixelsPerSample = newPps;
-        _controller.scrollOffset = newScroll.clamp(
-          0.0,
-          max(
-            0,
-            widget.data.sampleCount * newPps - _controller.viewportWidth,
-          ),
-        );
-        _lastFocalPoint = focalPoint;
-      });
-    }
-
-    // Horizontal drag during scale
-    final dx = focalPoint.dx - _lastFocalPoint!.dx;
-    if (dx.abs() > 1) {
-      setState(() {
-        _controller.scrollOffset = (_controller.scrollOffset - dx).clamp(
-          0.0,
-          max(
-            0,
-            widget.data.sampleCount * _controller.pixelsPerSample -
-                _controller.viewportWidth,
-          ),
-        );
-        _lastFocalPoint = focalPoint;
-      });
-    }
-  }
-
-  void _onScaleEnd(ScaleEndDetails details) {
-    _lastFocalPoint = null;
-  }
-
-  void _onHorizontalDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      _controller.scrollOffset =
-          (_controller.scrollOffset - details.delta.dx).clamp(
-        0.0,
-        max(
-          0,
-          widget.data.sampleCount * _controller.pixelsPerSample -
-              _controller.viewportWidth,
-        ),
-      );
-    });
+  void _handleDragEnd(DragEndDetails details) {
+    _dragStartX = null;
+    _dragStartScrollOffset = null;
   }
 }
 
-/// A simple time ruler displayed below the waveform.
-class _TimeRuler extends StatelessWidget {
-  final double durationSeconds;
-  final double viewportWidth;
+class _PlayheadPainter extends CustomPainter {
+  final double playheadPosition;
+  final double samplesPerSecond;
   final double pixelsPerSample;
   final double scrollOffset;
-  final double samplesPerSecond;
+  final Color color;
 
-  const _TimeRuler({
-    required this.durationSeconds,
-    required this.viewportWidth,
+  const _PlayheadPainter({
+    required this.playheadPosition,
+    required this.samplesPerSecond,
     required this.pixelsPerSample,
     required this.scrollOffset,
-    required this.samplesPerSecond,
+    required this.color,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 24,
-      child: CustomPaint(
-        painter: _TimeRulerPainter(
-          durationSeconds: durationSeconds,
-          viewportWidth: viewportWidth,
-          pixelsPerSample: pixelsPerSample,
-          scrollOffset: scrollOffset,
-          samplesPerSecond: samplesPerSecond,
-        ),
-        size: Size(viewportWidth, 24),
-      ),
-    );
+  void paint(Canvas canvas, Size size) {
+    if (playheadPosition < 0) return;
+    final x =
+        (playheadPosition * samplesPerSecond * pixelsPerSample) - scrollOffset;
+    if (x < 0 || x > size.width) return;
+
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2.0;
+
+    canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+
+    // Draw handle cap
+    final capPaint = Paint()..color = color;
+    final path = Path()
+      ..moveTo(x - 5, 0)
+      ..lineTo(x + 5, 0)
+      ..lineTo(x, 8)
+      ..close();
+    canvas.drawPath(path, capPaint);
+  }
+
+  @override
+  bool shouldRepaint(_PlayheadPainter oldDelegate) {
+    return oldDelegate.playheadPosition != playheadPosition ||
+        oldDelegate.samplesPerSecond != samplesPerSecond ||
+        oldDelegate.pixelsPerSample != pixelsPerSample ||
+        oldDelegate.scrollOffset != scrollOffset ||
+        oldDelegate.color != color;
   }
 }
 
 class _TimeRulerPainter extends CustomPainter {
   final double durationSeconds;
-  final double viewportWidth;
+  final double samplesPerSecond;
   final double pixelsPerSample;
   final double scrollOffset;
-  final double samplesPerSecond;
+  final double viewportWidth;
 
-  _TimeRulerPainter({
+  const _TimeRulerPainter({
     required this.durationSeconds,
-    required this.viewportWidth,
+    required this.samplesPerSecond,
     required this.pixelsPerSample,
     required this.scrollOffset,
-    required this.samplesPerSecond,
+    required this.viewportWidth,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.grey.shade400
-      ..strokeWidth = 1;
-    final textStyle = TextStyle(color: Colors.grey.shade500, fontSize: 9);
+    final bgPaint = Paint()..color = const Color(0xFFEEEEEE);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
 
-    // Determine tick interval based on zoom level
-    final visibleDuration =
-        viewportWidth / (pixelsPerSample * samplesPerSecond);
-    double tickInterval;
-    if (visibleDuration < 2) {
-      tickInterval = 0.1;
-    } else if (visibleDuration < 10) {
-      tickInterval = 0.5;
-    } else if (visibleDuration < 60) {
-      tickInterval = 1;
-    } else if (visibleDuration < 300) {
-      tickInterval = 5;
-    } else {
-      tickInterval = 10;
-    }
+    final linePaint = Paint()
+      ..color = const Color(0xFF9E9E9E)
+      ..strokeWidth = 1.0;
 
-    final startTime = scrollOffset / (pixelsPerSample * samplesPerSecond);
-    final endTime =
-        (scrollOffset + viewportWidth) / (pixelsPerSample * samplesPerSecond);
+    final tickPaint = Paint()
+      ..color = const Color(0xFF757575)
+      ..strokeWidth = 1.0;
 
-    final firstTick = (startTime / tickInterval).ceil() * tickInterval;
+    canvas.drawLine(const Offset(0, 0), Offset(size.width, 0), linePaint);
 
-    for (double t = firstTick; t <= endTime; t += tickInterval) {
-      final x = (t * samplesPerSecond * pixelsPerSample) - scrollOffset;
-      if (x < 0 || x > viewportWidth) continue;
+    // Calculate sensible time interval for tick marks
+    final pixelsPerSecond = samplesPerSecond * pixelsPerSample;
+    if (pixelsPerSecond <= 0) return;
 
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    final interval = _chooseTimeInterval(pixelsPerSecond);
+    final startTime = (scrollOffset / pixelsPerSecond);
+    final endTime = ((scrollOffset + viewportWidth) / pixelsPerSecond);
 
-      // Time label
-      final text = _formatTime(t);
+    final firstTick = (startTime / interval).floor() * interval;
+
+    for (double t = firstTick; t <= endTime; t += interval) {
+      if (t < 0 || t > durationSeconds) continue;
+
+      final x = (t * pixelsPerSecond) - scrollOffset;
+      if (x < 0 || x > size.width) continue;
+
+      canvas.drawLine(Offset(x, 0), Offset(x, 6), tickPaint);
+
+      final label = _formatTime(t);
       final textPainter = TextPainter(
-        text: TextSpan(text: text, style: textStyle),
+        text: TextSpan(
+          text: label,
+          style: const TextStyle(
+            color: Color(0xFF616161),
+            fontSize: 10,
+          ),
+        ),
         textDirection: TextDirection.ltr,
       )..layout();
-      textPainter.paint(canvas, Offset(x + 2, 2));
+
+      textPainter.paint(canvas, Offset(x + 2, 8));
     }
+  }
+
+  double _chooseTimeInterval(double pixelsPerSecond) {
+    if (pixelsPerSecond > 200) return 0.5;
+    if (pixelsPerSecond > 100) return 1.0;
+    if (pixelsPerSecond > 40) return 2.0;
+    if (pixelsPerSecond > 15) return 5.0;
+    if (pixelsPerSecond > 5) return 10.0;
+    return 30.0;
   }
 
   String _formatTime(double seconds) {
-    final m = (seconds ~/ 60);
-    final s = (seconds % 60);
-    if (m > 0) {
-      return '$m:${s.toStringAsFixed(1).padLeft(4, '0')}';
-    }
-    return s.toStringAsFixed(1);
+    final mins = (seconds / 60).floor();
+    final secs = (seconds % 60).toStringAsFixed(1);
+    if (mins == 0) return '${secs}s';
+    return '$mins:${(seconds % 60).floor().toString().padLeft(2, '0')}';
   }
 
   @override
-  bool shouldRepaint(covariant _TimeRulerPainter oldDelegate) =>
-      oldDelegate.scrollOffset != scrollOffset ||
-      oldDelegate.pixelsPerSample != pixelsPerSample ||
-      oldDelegate.viewportWidth != viewportWidth;
+  bool shouldRepaint(_TimeRulerPainter oldDelegate) {
+    return oldDelegate.durationSeconds != durationSeconds ||
+        oldDelegate.samplesPerSecond != samplesPerSecond ||
+        oldDelegate.pixelsPerSample != pixelsPerSample ||
+        oldDelegate.scrollOffset != scrollOffset ||
+        oldDelegate.viewportWidth != viewportWidth;
+  }
 }
