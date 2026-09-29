@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Updated documentation with high-resolution SVG visual overview banner.
+
 ## 1.1.0
 
 * Added `WaveformRenderMode` support:
