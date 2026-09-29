@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Pinned documentation preview image to version tag to bypass CDN cache.
+
 ## 1.1.1
 
 * Updated documentation with high-resolution SVG visual overview banner.
