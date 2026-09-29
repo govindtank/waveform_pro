@@ -13,6 +13,12 @@ Now available on **[pub.dev/packages/waveform_pro](https://pub.dev/packages/wave
 
 ---
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/govindtank/waveform_pro/main/screenshot.svg" width="680" alt="waveform_pro screenshot" />
+</p>
+
+---
+
 ## ✨ Features
 
 - 📊 **Multiple Render Modes**:

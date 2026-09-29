@@ -1,127 +1,190 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fafafa"/><stop offset="100%" stop-color="#f0f0f0"/></linearGradient>
-    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1565C0"/><stop offset="100%" stop-color="#42A5F5"/></linearGradient>
-    <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="8" flood-opacity="0.15"/></filter>
-    <filter id="phoneShadow"><feDropShadow dx="0" dy="8" stdDeviation="24" flood-opacity="0.25"/></filter>
-    <clipPath id="phoneClip"><rect x="40" y="20" width="360" height="740" rx="32"/></clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+    <linearGradient id="wavePlayed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+    <linearGradient id="waveUnplayed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#64748b"/><stop offset="100%" stop-color="#475569"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter>
+    <filter id="phoneShadow"><feDropShadow dx="0" dy="8" stdDeviation="24" flood-color="#000" flood-opacity="0.45"/></filter>
   </defs>
 
-  <!-- Phone frame -->
-  <rect x="40" y="20" width="360" height="740" rx="36" fill="#1a1a2e" filter="url(#phoneShadow)"/>
-  <rect x="48" y="28" width="344" height="724" rx="30" fill="url(#bg)"/>
-  <!-- Notch -->
-  <rect x="180" y="36" width="80" height="20" rx="10" fill="#1a1a2e"/>
+  <!-- Left: Phone Device Mockup -->
+  <g transform="translate(40, 25)">
+    <!-- Device frame -->
+    <rect x="0" y="0" width="340" height="450" rx="32" fill="#0b0f19" filter="url(#phoneShadow)"/>
+    <rect x="4" y="4" width="332" height="442" rx="28" fill="url(#bg)"/>
 
-  <!-- Status bar -->
-  <text x="62" y="60" font-family="system-ui,sans-serif" font-size="11" fill="#666">9:41</text>
-  <text x="350" y="60" font-family="system-ui,sans-serif" font-size="11" fill="#666" text-anchor="end">📶 🔋 97%</text>
+    <!-- Dynamic island -->
+    <rect x="120" y="12" width="100" height="18" rx="9" fill="#000000"/>
 
-  <!-- Header -->
-  <text x="228" y="90" font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#222" text-anchor="middle">waveform_pro</text>
-  <rect x="290" y="78" width="50" height="18" rx="9" fill="#E8F5E9"/>
-  <text x="315" y="91" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#2E7D32" text-anchor="middle">● Live</text>
+    <!-- Top bar -->
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#94a3b8">9:41</text>
+    <text x="310" y="26" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8" text-anchor="end">5G  100%</text>
 
-  <text x="68" y="120" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#333">Voice Recording</text>
+    <!-- App title -->
+    <text x="170" y="58" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#f8fafc" text-anchor="middle">Studio Audio Waveform</text>
+    <text x="170" y="74" font-family="-apple-system, sans-serif" font-size="11" fill="#38bdf8" text-anchor="middle">SoundCloud Discrete Bars Mode</text>
 
-  <!-- Waveform Container -->
-  <rect x="58" y="130" width="324" height="148" rx="10" fill="#fff" stroke="#e0e0e0" stroke-width="1"/>
+    <!-- Waveform card -->
+    <rect x="16" y="90" width="308" height="150" rx="16" fill="#090d16" stroke="#334155" stroke-width="1"/>
 
-  <!-- Region highlight -->
-  <rect x="148" y="130" width="110" height="148" fill="rgba(33,150,243,0.1)"/>
-  <line x1="148" y1="130" x2="148" y2="278" stroke="rgba(33,150,243,0.3)" stroke-width="2"/>
-  <line x1="258" y1="130" x2="258" y2="278" stroke="rgba(33,150,243,0.3)" stroke-width="2"/>
+    <!-- Highlight Region (selection) -->
+    <rect x="110" y="90" width="90" height="150" fill="rgba(56, 189, 248, 0.12)"/>
+    <line x1="110" y1="90" x2="110" y2="240" stroke="#38bdf8" stroke-width="2"/>
+    <line x1="200" y1="90" x2="200" y2="240" stroke="#38bdf8" stroke-width="2"/>
 
-  <!-- Center line -->
-  <line x1="58" y1="204" x2="382" y2="204" stroke="rgba(0,0,0,0.06)" stroke-width="0.5"/>
+    <!-- Center guide -->
+    <line x1="16" y1="165" x2="324" y2="165" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
 
-  <!-- Cue marker: Intro -->
-  <line x1="148" y1="138" x2="148" y2="278" stroke="#FF9800" stroke-width="2"/>
-  <rect x="148" y="136" width="40" height="16" rx="4" fill="#FF9800"/>
-  <text x="168" y="148" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">Intro</text>
+    <!-- Waveform Bars (RenderMode.bars) -->
+    <!-- Played Section (0 -> 140px) -->
+    <g fill="url(#wavePlayed)">
+      <rect x="28" y="153" width="3" height="24" rx="1.5"/>
+      <rect x="34" y="145" width="3" height="40" rx="1.5"/>
+      <rect x="40" y="135" width="3" height="60" rx="1.5"/>
+      <rect x="46" y="148" width="3" height="34" rx="1.5"/>
+      <rect x="52" y="130" width="3" height="70" rx="1.5"/>
+      <rect x="58" y="125" width="3" height="80" rx="1.5"/>
+      <rect x="64" y="140" width="3" height="50" rx="1.5"/>
+      <rect x="70" y="120" width="3" height="90" rx="1.5"/>
+      <rect x="76" y="115" width="3" height="100" rx="1.5"/>
+      <rect x="82" y="130" width="3" height="70" rx="1.5"/>
+      <rect x="88" y="142" width="3" height="46" rx="1.5"/>
+      <rect x="94" y="128" width="3" height="74" rx="1.5"/>
+      <rect x="100" y="122" width="3" height="86" rx="1.5"/>
+      <rect x="106" y="118" width="3" height="94" rx="1.5"/>
+      <rect x="112" y="132" width="3" height="66" rx="1.5"/>
+      <rect x="118" y="125" width="3" height="80" rx="1.5"/>
+      <rect x="124" y="110" width="3" height="110" rx="1.5"/>
+      <rect x="130" y="135" width="3" height="60" rx="1.5"/>
+      <rect x="136" y="120" width="3" height="90" rx="1.5"/>
+    </g>
 
-  <!-- Cue marker: Outro -->
-  <line x1="272" y1="138" x2="272" y2="278" stroke="#9C27B0" stroke-width="2"/>
-  <rect x="260" y="136" width="44" height="16" rx="4" fill="#9C27B0"/>
-  <text x="282" y="148" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">Outro</text>
+    <!-- Playhead Scrub Line -->
+    <line x1="142" y1="90" x2="142" y2="240" stroke="#f43f5e" stroke-width="2"/>
+    <polygon points="137,90 147,90 142,98" fill="#f43f5e"/>
 
-  <!-- Waveform path - mirrored -->
-  <path d="M58,204 L64,184 L68,192 L72,175 L76,190 L80,165 L84,182 L88,174 L92,162 L96,178 L100,170 L104,186 L108,176 L112,160 L116,178 L120,172 L124,182 L128,168 L132,176 L136,170 L140,158 L144,180 L148,172 L152,182 L156,168 L160,186 L164,174 L168,180 L172,164 L176,184 L180,172 L184,178 L188,162 L192,186 L196,174 L200,180 L204,168 L208,184 L212,172 L216,178 L220,162 L224,186 L228,174 L232,182 L236,168 L240,184 L244,170 L248,178 L252,164 L256,186 L260,172 L264,180 L268,168 L272,184 L276,174 L280,178 L284,162 L288,186 L292,172 L296,180 L300,166 L304,182 L308,174 L312,178 L316,162 L320,186 L324,174 L328,182 L332,168 L336,184 L340,172 L344,180 L348,164 L352,186 L356,174 L360,178 L364,166 L368,180 L372,176 L376,182 L380,168 L382,172" fill="none" stroke="url(#wave)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Mirror path -->
-  <path d="M58,204 L64,224 L68,216 L72,233 L76,218 L80,243 L84,226 L88,234 L92,246 L96,230 L100,238 L104,222 L108,232 L112,248 L116,230 L120,236 L124,226 L128,240 L132,232 L136,238 L140,250 L144,228 L148,236 L152,226 L156,240 L160,222 L164,234 L168,228 L172,244 L176,224 L180,236 L184,230 L188,246 L192,222 L196,234 L200,228 L204,240 L208,224 L212,236 L216,230 L220,246 L224,222 L228,234 L232,226 L236,240 L240,224 L244,238 L248,230 L252,244 L256,222 L260,236 L264,228 L268,240 L272,224 L276,234 L280,230 L284,246 L288,222 L292,236 L296,228 L300,242 L304,226 L308,234 L312,230 L316,246 L320,222 L324,236 L328,226 L332,240 L336,224 L340,236 L344,228 L348,244 L352,222 L356,234 L360,230 L364,242 L368,226 L372,232 L376,226 L380,240 L382,236" fill="none" stroke="url(#wave)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    <!-- Unplayed Section (144 -> 312px) -->
+    <g fill="url(#waveUnplayed)">
+      <rect x="144" y="128" width="3" height="74" rx="1.5"/>
+      <rect x="150" y="140" width="3" height="50" rx="1.5"/>
+      <rect x="156" y="122" width="3" height="86" rx="1.5"/>
+      <rect x="162" y="116" width="3" height="98" rx="1.5"/>
+      <rect x="168" y="130" width="3" height="70" rx="1.5"/>
+      <rect x="174" y="125" width="3" height="80" rx="1.5"/>
+      <rect x="180" y="135" width="3" height="60" rx="1.5"/>
+      <rect x="186" y="145" width="3" height="40" rx="1.5"/>
+      <rect x="192" y="130" width="3" height="70" rx="1.5"/>
+      <rect x="198" y="120" width="3" height="90" rx="1.5"/>
+      <rect x="204" y="115" width="3" height="100" rx="1.5"/>
+      <rect x="210" y="138" width="3" height="54" rx="1.5"/>
+      <rect x="216" y="148" width="3" height="34" rx="1.5"/>
+      <rect x="222" y="128" width="3" height="74" rx="1.5"/>
+      <rect x="228" y="120" width="3" height="90" rx="1.5"/>
+      <rect x="234" y="132" width="3" height="66" rx="1.5"/>
+      <rect x="240" y="142" width="3" height="46" rx="1.5"/>
+      <rect x="246" y="125" width="3" height="80" rx="1.5"/>
+      <rect x="252" y="118" width="3" height="94" rx="1.5"/>
+      <rect x="258" y="130" width="3" height="70" rx="1.5"/>
+      <rect x="264" y="145" width="3" height="40" rx="1.5"/>
+      <rect x="270" y="135" width="3" height="60" rx="1.5"/>
+      <rect x="276" y="150" width="3" height="30" rx="1.5"/>
+      <rect x="282" y="140" width="3" height="50" rx="1.5"/>
+      <rect x="288" y="155" width="3" height="20" rx="1.5"/>
+      <rect x="294" y="148" width="3" height="34" rx="1.5"/>
+      <rect x="300" y="158" width="3" height="14" rx="1.5"/>
+    </g>
 
-  <!-- Time ruler -->
-  <line x1="58" y1="278" x2="382" y2="278" stroke="#e0e0e0"/>
-  <g font-family="system-ui,sans-serif" font-size="8" fill="#999">
-    <line x1="67" y1="278" x2="67" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="67" y="295">0.0</text>
-    <line x1="100" y1="278" x2="100" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="100" y="295">2.0</text>
-    <line x1="133" y1="278" x2="133" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="133" y="295">4.0</text>
-    <line x1="166" y1="278" x2="166" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="166" y="295">6.0</text>
-    <line x1="199" y1="278" x2="199" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="199" y="295">8.0</text>
-    <line x1="232" y1="278" x2="232" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="232" y="295">10.0</text>
-    <line x1="265" y1="278" x2="265" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="265" y="295">12.0</text>
-    <line x1="298" y1="278" x2="298" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="298" y="295">14.0</text>
-    <line x1="331" y1="278" x2="331" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="331" y="295">16.0</text>
-    <line x1="364" y1="278" x2="364" y2="286" stroke="#ccc" stroke-width="0.5"/><text x="364" y="295">18.0</text>
+    <!-- Cue Marker Badge -->
+    <rect x="100" y="96" width="46" height="16" rx="4" fill="#f59e0b"/>
+    <text x="123" y="108" font-family="-apple-system, sans-serif" font-size="9" font-weight="700" fill="#ffffff" text-anchor="middle">Intro</text>
+
+    <!-- Time Ruler -->
+    <line x1="16" y1="240" x2="324" y2="240" stroke="#334155"/>
+    <g font-family="-apple-system, sans-serif" font-size="9" fill="#64748b">
+      <text x="28" y="254">0:00</text>
+      <text x="96" y="254">0:05</text>
+      <text x="166" y="254">0:10</text>
+      <text x="236" y="254">0:15</text>
+      <text x="304" y="254">0:20</text>
+    </g>
+
+    <!-- Audio Player Controls -->
+    <g transform="translate(16, 275)">
+      <!-- Progress time -->
+      <text x="0" y="14" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#38bdf8">0:08.4</text>
+      <text x="308" y="14" font-family="-apple-system, sans-serif" font-size="12" fill="#64748b" text-anchor="end">0:20.0</text>
+
+      <!-- Action buttons -->
+      <circle cx="154" cy="50" r="24" fill="#38bdf8"/>
+      <polygon points="149,40 163,50 149,60" fill="#0f172a"/>
+
+      <circle cx="84" cy="50" r="16" fill="#1e293b"/>
+      <text x="84" y="54" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">⏮ 5s</text>
+
+      <circle cx="224" cy="50" r="16" fill="#1e293b"/>
+      <text x="224" y="54" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">5s ⏭</text>
+
+      <!-- Mode selection chips -->
+      <rect x="14" y="90" width="80" height="24" rx="12" fill="#38bdf8"/>
+      <text x="54" y="106" font-family="-apple-system, sans-serif" font-size="10" font-weight="600" fill="#0f172a" text-anchor="middle">Bars (Active)</text>
+
+      <rect x="104" y="90" width="90" height="24" rx="12" fill="#1e293b" stroke="#334155"/>
+      <text x="149" y="106" font-family="-apple-system, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Curved Spline</text>
+
+      <rect x="204" y="90" width="80" height="24" rx="12" fill="#1e293b" stroke="#334155"/>
+      <text x="244" y="106" font-family="-apple-system, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Continuous</text>
+    </g>
+
+    <!-- Home bar -->
+    <rect x="120" y="434" width="100" height="4" rx="2" fill="#ffffff" opacity="0.3"/>
   </g>
 
-  <!-- Zoom controls -->
-  <g transform="translate(130, 310)">
-    <circle cx="20" cy="12" r="16" fill="#f0f0f0"/><text x="20" y="16" font-size="14" fill="#555" text-anchor="middle" font-weight="600">−</text>
-    <text x="70" y="16" font-family="system-ui,sans-serif" font-size="11" fill="#888" text-anchor="middle">1.0 px/sample</text>
-    <circle cx="120" cy="12" r="16" fill="#f0f0f0"/><text x="120" y="16" font-size="14" fill="#555" text-anchor="middle" font-weight="600">+</text>
-    <text x="155" y="16" font-family="system-ui,sans-serif" font-size="11" fill="#1976D2" font-weight="600">Fit</text>
+  <!-- Right: Feature Overview & Live Specs -->
+  <g transform="translate(420, 40)">
+    <text x="0" y="30" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="28" font-weight="800" fill="#0f172a">waveform_pro</text>
+    <text x="0" y="55" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#64748b">Production-Quality Audio Waveform Engine</text>
+
+    <!-- Feature list card -->
+    <g transform="translate(0, 80)">
+      <g transform="translate(0, 0)">
+        <circle cx="10" cy="10" r="10" fill="#e0f2fe"/>
+        <text x="10" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#0284c7" text-anchor="middle">✓</text>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Discrete Bar, Continuous &amp; Bezier Spline Modes</text>
+      </g>
+
+      <g transform="translate(0, 32)">
+        <circle cx="10" cy="10" r="10" fill="#e0f2fe"/>
+        <text x="10" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#0284c7" text-anchor="middle">✓</text>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Dual-Color Played vs Unplayed Progress Shader</text>
+      </g>
+
+      <g transform="translate(0, 64)">
+        <circle cx="10" cy="10" r="10" fill="#e0f2fe"/>
+        <text x="10" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#0284c7" text-anchor="middle">✓</text>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">GPU-Accelerated Multi-Resolution Pyramid Cache</text>
+      </g>
+
+      <g transform="translate(0, 96)">
+        <circle cx="10" cy="10" r="10" fill="#e0f2fe"/>
+        <text x="10" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#0284c7" text-anchor="middle">✓</text>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Draggable Regions, Cue Markers &amp; Adaptive Ruler</text>
+      </g>
+
+      <g transform="translate(0, 128)">
+        <circle cx="10" cy="10" r="10" fill="#e0f2fe"/>
+        <text x="10" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#0284c7" text-anchor="middle">✓</text>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Live Recording Buffer &amp; Headless PNG Exporter</text>
+      </g>
+    </g>
+
+    <!-- Code Preview Card -->
+    <g transform="translate(0, 260)">
+      <rect x="0" y="0" width="340" height="110" rx="10" fill="#0f172a"/>
+      <text x="16" y="24" font-family="Consolas, Monaco, monospace" font-size="11" fill="#38bdf8">WaveformTimeline(</text>
+      <text x="16" y="44" font-family="Consolas, Monaco, monospace" font-size="11" fill="#e2e8f0">  data: audioPeaks,</text>
+      <text x="16" y="64" font-family="Consolas, Monaco, monospace" font-size="11" fill="#e2e8f0">  style: WaveformStyle.voiceMemo,</text>
+      <text x="16" y="84" font-family="Consolas, Monaco, monospace" font-size="11" fill="#e2e8f0">  playheadPosition: currentSeconds,</text>
+      <text x="16" y="100" font-family="Consolas, Monaco, monospace" font-size="11" fill="#38bdf8">)</text>
+    </g>
   </g>
-
-  <!-- Feature badges -->
-  <rect x="68" y="345" width="130" height="20" rx="10" fill="#E3F2FD"/>
-  <text x="133" y="359" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#1565C0" text-anchor="middle">✅ Voice Recording (30s)</text>
-  <rect x="206" y="345" width="120" height="20" rx="10" fill="#f0f0f0"/>
-  <text x="266" y="359" font-family="system-ui,sans-serif" font-size="9" fill="#666" text-anchor="middle">🎵 Music Track</text>
-
-  <!-- Demo buttons -->
-  <text x="68" y="390" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#333">Selection Region</text>
-  <rect x="68" y="398" width="120" height="32" rx="16" fill="#1976D2"/>
-  <text x="128" y="418" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">Select 10-20s</text>
-  <rect x="198" y="398" width="80" height="32" rx="16" fill="none" stroke="#1976D2" stroke-width="1.5"/>
-  <text x="238" y="418" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#1976D2" text-anchor="middle">Clear</text>
-
-  <text x="68" y="450" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#333">Cue Markers</text>
-  <rect x="68" y="458" width="115" height="32" rx="16" fill="#1976D2"/>
-  <text x="125" y="478" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">Marker at 25%</text>
-  <rect x="193" y="458" width="115" height="32" rx="16" fill="#1976D2"/>
-  <text x="250" y="478" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">Marker at 75%</text>
-
-  <!-- Info card -->
-  <rect x="58" y="500" width="324" height="100" rx="12" fill="#f8f9fa" filter="url(#shadow)"/>
-  <text x="78" y="520" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#333">Interactive Features</text>
-  <g font-family="system-ui,sans-serif" font-size="11" fill="#555">
-    <text x="78" y="540">🤏  Pinch to zoom in/out</text>
-    <text x="78" y="556">👉  Swipe to scroll horizontally</text>
-    <text x="78" y="572">👆  Tap to seek to a position</text>
-    <text x="78" y="588">📌  Long-press to add a cue marker</text>
-    <text x="220" y="588">🔍  Zoom controls below waveform</text>
-  </g>
-
-  <!-- Labels -->
-  <text x="440" y="100" font-family="system-ui,sans-serif" font-size="28" font-weight="800" fill="#333">waveform_pro</text>
-  <text x="440" y="130" font-family="system-ui,sans-serif" font-size="16" fill="#666">Flutter Waveform Library</text>
-
-  <g transform="translate(440, 160)">
-    <rect x="0" y="0" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="12" font-family="system-ui,sans-serif" font-size="14" fill="#555">GPU-accelerated rendering</text>
-    <rect x="0" y="24" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="36" font-family="system-ui,sans-serif" font-size="14" fill="#555">Multi-resolution pyramid cache</text>
-    <rect x="0" y="48" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="60" font-family="system-ui,sans-serif" font-size="14" fill="#555">Pinch-to-zoom &amp; scroll</text>
-    <rect x="0" y="72" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="84" font-family="system-ui,sans-serif" font-size="14" fill="#555">Region selection with handles</text>
-    <rect x="0" y="96" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="108" font-family="system-ui,sans-serif" font-size="14" fill="#555">Cue markers with labels</text>
-    <rect x="0" y="120" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="132" font-family="system-ui,sans-serif" font-size="14" fill="#555">Time ruler with adaptive ticks</text>
-    <rect x="0" y="144" width="14" height="14" rx="3" fill="#4CAF50"/><text x="22" y="156" font-family="system-ui,sans-serif" font-size="14" fill="#555">WAV &amp; PCM peak extraction</text>
-  </g>
-
-  <text x="440" y="360" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#333">Quick Start</text>
-  <rect x="440" y="372" width="320" height="50" rx="8" fill="#263238"/>
-  <text x="454" y="392" font-family="monospace" font-size="11" fill="#E8F5E9">WaveformTimeline(</text>
-  <text x="454" y="408" font-family="monospace" font-size="11" fill="#E8F5E9">  data: myWaveform, height: 140</text>
-  <text x="454" y="424" font-family="monospace" font-size="11" fill="#E8F5E9">)</text>
-
-  <text x="440" y="450" font-family="system-ui,sans-serif" font-size="12" fill="#888">github.com/govindtank/waveform_pro</text>
 </svg>
