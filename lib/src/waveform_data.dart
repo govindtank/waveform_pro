@@ -142,3 +142,15 @@ class _SeededRandom {
     return _seed / 0x7fffffff;
   }
 }
+
+/// Utilities for normalizing live stream audio peak buffers.
+class WaveformStreamHelper {
+  /// Normalizes a sliding raw buffer of float PCM amplitudes to fit [0.0, 1.0].
+  static List<double> normalizeWindow(List<double> rawAmplitudes,
+      {double maxThreshold = 1.0}) {
+    if (rawAmplitudes.isEmpty) return const [];
+    return rawAmplitudes
+        .map((v) => (v.abs() / maxThreshold).clamp(0.0, 1.0))
+        .toList();
+  }
+}

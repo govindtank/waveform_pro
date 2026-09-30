@@ -43,3 +43,8 @@
 
 * Fix example analysis issue on pub.dev by updating .pubignore.
 * Improve pub.dev compatibility.
+
+## 1.1.4
+
+* Added `WaveformStreamHelper.normalizeWindow()` for real-time audio microphone peak processing.
+* Automated pub.dev OIDC deployment.
