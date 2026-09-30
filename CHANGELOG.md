@@ -1,3 +1,13 @@
+## 1.1.4
+
+* Added `WaveformStreamHelper.normalizeWindow()` for real-time audio microphone peak processing.
+* Verified CI/CD workflows.
+
+## 1.1.3
+
+* Fixed example analysis issue on pub.dev by updating `.pubignore`.
+* Improved pub.dev compatibility.
+
 ## 1.1.2
 
 * Pinned documentation preview image to version tag to bypass CDN cache.
@@ -24,7 +34,7 @@
 
 ## 1.0.2
 
-* Exclude IDE files (`.idea/`, `*.iml`) from the published archive.
+* Excluded IDE files (`.idea/`, `*.iml`) from the published archive.
 
 ## 1.0.1
 
@@ -38,13 +48,3 @@
 * Zoom + pan timeline with interactive region selection.
 * Cue markers, playhead, and a `WaveformController` API for programmatic control.
 * Dark/light theme support via configurable painter styles.
-
-## 1.1.3
-
-* Fix example analysis issue on pub.dev by updating .pubignore.
-* Improve pub.dev compatibility.
-
-## 1.1.4
-
-* Added `WaveformStreamHelper.normalizeWindow()` for real-time audio microphone peak processing.
-* Automated pub.dev OIDC deployment.
