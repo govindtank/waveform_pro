@@ -38,3 +38,8 @@
 * Zoom + pan timeline with interactive region selection.
 * Cue markers, playhead, and a `WaveformController` API for programmatic control.
 * Dark/light theme support via configurable painter styles.
+
+## 1.1.3
+
+* Fix example analysis issue on pub.dev by updating .pubignore.
+* Improve pub.dev compatibility.

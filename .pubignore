@@ -4,8 +4,3 @@
 build/
 example/.dart_tool/
 example/build/
-example/ios/
-example/android/
-example/windows/
-example/linux/
-example/macos/
