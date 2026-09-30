@@ -1,4 +1,4 @@
-name: CI
+name: Publish to Pub.dev
 
 on:
   push:
@@ -6,8 +6,12 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  build:
+  check-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,3 +32,7 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+      - name: Publish to pub.dev
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: dart pub publish --force
