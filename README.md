@@ -179,6 +179,22 @@ Explore complementary production-grade libraries built for high-performance Flut
 
 ---
 
+## 💖 Support the Project
+
+If you find this package useful, consider supporting its active maintenance and future development:
+
+<p align="left">
+  <a href="https://buymeacoffee.com/govindtanko"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=govindtanko&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me A Coffee" height="40"/></a>
+  &nbsp;
+  <a href="https://github.com/sponsors/govindtank"><img src="https://img.shields.io/badge/GitHub%20Sponsors-Sponsor-EA4AAA?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Sponsors" height="40"/></a>
+  &nbsp;
+  <a href="https://www.patreon.com/govindtank"><img src="https://img.shields.io/badge/Patreon-Support-F96854?style=for-the-badge&logo=patreon&logoColor=white" alt="Patreon" height="40"/></a>
+</p>
+
+---
+
 ## 📄 License
 
-This package is licensed under the [MIT License](LICENSE).
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+*Maintained with ❤️ by [Govind Tank](https://github.com/govindtank).*
