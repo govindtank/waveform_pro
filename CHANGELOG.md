@@ -1,3 +1,7 @@
+## 1.1.5
+
+* docs: add interactive Live Web Demo and ecosystem documentation.
+
 ## 1.1.4
 
 * Added `WaveformStreamHelper.normalizeWindow()` for real-time audio microphone peak processing.
