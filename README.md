@@ -1,16 +1,13 @@
 # waveform_pro
 
-[![Pub Version](https://img.shields.io/pub/v/waveform_pro.svg?style=flat-square&color=blue)](https://pub.dev/packages/waveform_pro)
-[![Pub Points](https://img.shields.io/pub/points/waveform_pro?style=flat-square[![Pub Points](https://img.shields.io/pub/points/waveform_pro?style=flat-square&color=2E8B57&label=pub%20points)](https://pub.dev/packages/waveform_pro/score)color=2E8B57[![Pub Points](https://img.shields.io/pub/points/waveform_pro?style=flat-square&color=2E8B57&label=pub%20points)](https://pub.dev/packages/waveform_pro/score)label=pub%20points)](https://pub.dev/packages/waveform_pro/score)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Try%20In%20Browser-00ff88?style=flat-square&logo=flutter)](https://govindtank.github.io/waveform_pro/)
-[![Pub Likes](https://img.shields.io/pub/likes/waveform_pro?style=flat-square)](https://pub.dev/packages/waveform_pro)
-[![CI](https://github.com/govindtank/waveform_pro/actions/workflows/ci.yml/badge.svg)](https://github.com/govindtank/waveform_pro/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Web%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-blue?style=flat-square)](https://pub.dev/packages/waveform_pro)
-
-A production-quality, GPU-accelerated Flutter audio waveform visualization library supporting continuous envelopes, discrete SoundCloud-style bars, bezier curved splines, dual-color playback progress, interactive zooming/panning, draggable region selection, cue markers, live audio stream buffering, and headless PNG exports.
-
-Now available on **[pub.dev/packages/waveform_pro](https://pub.dev/packages/waveform_pro)**.
+<p align="center">
+  <a href="https://pub.dev/packages/waveform_pro"><img src="https://img.shields.io/pub/v/waveform_pro.svg?style=flat-square&color=blue" alt="Pub Version"></a>
+  <a href="https://pub.dev/packages/waveform_pro/score"><img src="https://img.shields.io/pub/points/waveform_pro?style=flat-square&color=2E8B57&label=pub%20points" alt="Pub Points"></a>
+  <a href="https://govindtank.github.io/waveform_pro/"><img src="https://img.shields.io/badge/Live%20Demo-Try%20In%20Browser-00ff88?style=flat-square&logo=flutter" alt="Live Demo"></a>
+  <a href="https://pub.dev/packages/waveform_pro"><img src="https://img.shields.io/pub/likes/waveform_pro?style=flat-square" alt="Pub Likes"></a>
+  <a href="https://github.com/govindtank/waveform_pro/actions"><img src="https://github.com/govindtank/waveform_pro/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+</p>
 
 ---
 
