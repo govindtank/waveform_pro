@@ -1,6 +1,0 @@
-.dart_tool/
-.idea/
-*.iml
-build/
-example/.dart_tool/
-example/build/
